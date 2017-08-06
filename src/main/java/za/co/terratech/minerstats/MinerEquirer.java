@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -73,8 +74,8 @@ public class MinerEquirer extends Thread {
                 responseObject.setMinerResult(result);
             }
             return responseObject;
-        } catch (SocketTimeoutException ex) {
-            ex.printStackTrace();
+        } catch (SocketTimeoutException | ConnectException ex) {
+            log.log(Level.WARNING, "Socket timeout or failed to connect trying to query host: {0} on port: {1} Please check there is an active miner running and available and that the ports are configured correctly.", new Object[]{host, port});
             responseObject = new MinerStatsResponse(0, ex.getMessage());
             return responseObject;
         } catch (IOException ex) {

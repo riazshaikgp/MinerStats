@@ -1,0 +1,12 @@
+{
+    "result": {
+        "addr": "1isZ1cMATUgbH9iWSVMBPgr6SaC6aKoT9",
+        "workers": [["warlock", {
+                    "a": "28.67"
+                }, 37, 1, "0.25", 0], ["junior", {
+                    "a": "32.27"
+                }, 16, 1, "0.25", 0]],
+        "algo": 20
+    },
+    "method": "stats.provider.workers"
+}

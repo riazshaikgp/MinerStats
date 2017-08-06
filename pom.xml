@@ -88,7 +88,7 @@
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>0.4.37</version>
                 <configuration>
-                    <sourceDirectory>${basedir}/src/main/resources/schemas</sourceDirectory>
+                    <sourceDirectory>${basedir}/src/main/resources/schemas/</sourceDirectory>
                     <targetPackage>za.co.terratech.minerstats</targetPackage>
                     <annotationStyle>gson</annotationStyle>
                     <outputDirectory>${basedir}/src/main/java</outputDirectory>
