@@ -1,0 +1,25 @@
+{
+    "tolerance": 5,
+    "temperature": 85,
+    "hashrates": true,
+    "miners": [
+        {
+            "id": 0,
+            "name": "warlock",
+            "host": "192.168.1.2",
+            "port": 3333,
+            "target_eth": 30,
+            "target_dcr": 600,
+            "comments": "GTX 1070"
+        },
+        {
+            "id": 1,
+            "name": "junior",
+            "host": "192.168.1.3",
+            "port": 3333,
+            "target_eth": 25,
+            "target_dcr": 350,
+            "comments": "2 x GTX 1050 ti"
+        }
+    ]
+}
