@@ -57,8 +57,8 @@ function getMiningData() {
         }
         //document.getElementById("ethHashrate").innerHTML = parseFloat(Math.round(totalEthHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
         //document.getElementById("decHashrate").innerHTML = parseFloat(Math.round(totalDecHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
-        document.getElementById("ethRejects").innerHTML = ethShares + " Shares<br/>" + ethRejects + " Rejects";
-        document.getElementById("decRejects").innerHTML = decShares + " Shares<br/>" + decRejects + " Rejects";
+        //document.getElementById("ethRejects").innerHTML = ethShares + " Shares<br/>" + ethRejects + " Rejects";
+        //document.getElementById("decRejects").innerHTML = decShares + " Shares<br/>" + decRejects + " Rejects";
     }
 }
 // Create the chart
@@ -439,3 +439,57 @@ var decSpeed = Highcharts.chart('decHashrate', {
         }]
 });
 
+ethRejectChart = Highcharts.chart('ethRejects', {
+    chart: {
+        events: {
+            load: function () {
+                setInterval(function () {
+                    shares = ethRejectChart.series[0].data[0];
+                    console.log(shares);
+                }, 1000);
+            }
+        },
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Ethereum Shares/Rejects Ratio'
+    },
+    exporting: {
+        enabled: false
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: 'Shares',
+            y: 0
+        }, {
+            name: 'Rejects',
+            y: 0,
+            sliced: true,
+            selected: true
+        }]
+    }]
+});
