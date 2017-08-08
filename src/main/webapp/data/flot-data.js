@@ -444,8 +444,16 @@ ethRejectChart = Highcharts.chart('ethRejects', {
         events: {
             load: function () {
                 setInterval(function () {
-                    shares = ethRejectChart.series[0].data[0];
-                    console.log(shares);
+                    var seriesData = [];
+                    $.each(ethRejectChart.series[0].data, function(i, item){
+                        if(item.name === 'Shares'){
+                            item.y=ethShares;
+                        }else if(item.name === 'Rejects'){
+                            item.y=ethRejects;
+                        }
+                        seriesData.push(item);
+                    });
+                    ethRejectChart.series[0].setData(seriesData, true);
                 }, 1000);
             }
         },
@@ -480,7 +488,7 @@ ethRejectChart = Highcharts.chart('ethRejects', {
         }
     },
     series: [{
-        name: 'Brands',
+        name: 'Ethereum Shares/Rejects',
         colorByPoint: true,
         data: [{
             name: 'Shares',
@@ -490,6 +498,69 @@ ethRejectChart = Highcharts.chart('ethRejects', {
             y: 0,
             sliced: true,
             selected: true
+        }]
+    }]
+});
+
+decRejectChart = Highcharts.chart('decRejects', {
+    chart: {
+        events: {
+            load: function () {
+                setInterval(function () {
+                    var seriesData = [];
+                    $.each(decRejectChart.series[0].data, function(i, item){
+                        if(item.name === 'Shares'){
+                            item.y=decShares;
+                        }else if(item.name === 'Rejects'){
+                            item.y=decRejects;
+                        }
+                        seriesData.push(item);
+                    });
+                    ethRejectChart.series[0].setData(seriesData, true);
+                }, 1000);
+            }
+        },
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Decred Shares/Rejects Ratio'
+    },
+    exporting: {
+        enabled: false
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Decred Shares/Rejects',
+        colorByPoint: true,
+        data: [{
+            name: 'Shares',
+            y: 0,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Rejects',
+            y: 0
         }]
     }]
 });
