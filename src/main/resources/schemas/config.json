@@ -2,6 +2,7 @@
     "tolerance": 5,
     "temperature": 85,
     "hashrates": true,
+    "altcoin": "Sia", 
     "miners": [
         {
             "id": 0,

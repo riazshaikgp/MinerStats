@@ -43,6 +43,10 @@ public class MinerStatsResponse implements Serializable {
     @Expose
     private Result minerResult;
     
+    @SerializedName("name")
+    @Expose
+    private String name;
+    
     private final static long serialVersionUID = -4958419375007768114L;
 
     public MinerStatsResponse() {
@@ -99,6 +103,14 @@ public class MinerStatsResponse implements Serializable {
 
     public void setMinerResult(Result minerResult) {
         this.minerResult = minerResult;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

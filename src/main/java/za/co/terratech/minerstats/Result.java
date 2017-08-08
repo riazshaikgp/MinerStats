@@ -6,6 +6,8 @@
 package za.co.terratech.minerstats;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -43,6 +45,8 @@ public class Result implements Serializable{
     public String ethPoolSwitches;
     public String decInvalidShares;
     public String decPoolSwitches;
+    public List<GpuStats> gpuStats = new ArrayList();
+    public String name;
 
     public String getClaymoreVersion() {
         return claymoreVersion;
@@ -178,6 +182,22 @@ public class Result implements Serializable{
 
     public void setDecPoolSwitches(String decPoolSwitches) {
         this.decPoolSwitches = decPoolSwitches;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<GpuStats> getGpuStats() {
+        return gpuStats;
+    }
+
+    public void setGpuStats(List<GpuStats> gpuStats) {
+        this.gpuStats = gpuStats;
     }
 
     @Override

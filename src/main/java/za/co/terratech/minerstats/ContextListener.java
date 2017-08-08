@@ -49,7 +49,7 @@ public class ContextListener implements ServletContextListener {
             Gson gson = new Gson();
             config = gson.fromJson(json, Config.class);
             for (Miner miner : config.getMiners()) {
-                MinerEquirer enquirer = new MinerEquirer(miner.getId(), miner.getHost(), miner.getPort());
+                MinerEquirer enquirer = new MinerEquirer(miner.getId(), miner.getHost(), miner.getPort(), miner.getName());
                 ContextListener.getMiners().put(miner.getName(), enquirer);
                 executor.execute(enquirer);
             }

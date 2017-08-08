@@ -20,6 +20,9 @@ public class Config {
     @SerializedName("hashrates")
     @Expose
     private Boolean hashrates;
+    @SerializedName("altcoin")
+    @Expose
+    private String altcoin;
     @SerializedName("miners")
     @Expose
     private List<Miner> miners = new ArrayList<Miner>();
@@ -48,6 +51,14 @@ public class Config {
         this.hashrates = hashrates;
     }
 
+    public String getAltcoin() {
+        return altcoin;
+    }
+
+    public void setAltcoin(String altcoin) {
+        this.altcoin = altcoin;
+    }
+
     public List<Miner> getMiners() {
         return miners;
     }
@@ -63,7 +74,7 @@ public class Config {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(tolerance).append(temperature).append(hashrates).append(miners).toHashCode();
+        return new HashCodeBuilder().append(tolerance).append(temperature).append(hashrates).append(altcoin).append(miners).toHashCode();
     }
 
     @Override
@@ -75,7 +86,7 @@ public class Config {
             return false;
         }
         Config rhs = ((Config) other);
-        return new EqualsBuilder().append(tolerance, rhs.tolerance).append(temperature, rhs.temperature).append(hashrates, rhs.hashrates).append(miners, rhs.miners).isEquals();
+        return new EqualsBuilder().append(tolerance, rhs.tolerance).append(temperature, rhs.temperature).append(hashrates, rhs.hashrates).append(altcoin, rhs.altcoin).append(miners, rhs.miners).isEquals();
     }
 
 }

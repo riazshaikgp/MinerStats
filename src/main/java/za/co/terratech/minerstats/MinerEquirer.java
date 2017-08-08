@@ -26,15 +26,17 @@ public class MinerEquirer extends Thread {
 
     Logger log = Logger.getLogger(MinerEquirer.class.getName());
 
-    public MinerEquirer(int id, String host, int port) {
+    public MinerEquirer(int id, String host, int port, String name) {
         this.id = id;
         this.host = host;
         this.port = port;
+        this.name = name;
     }
 
     private int id;
     private String host;
     private int port;
+    private String name;
     private MinerStatsResponse minerStats;
 
     @Override
@@ -70,7 +72,8 @@ public class MinerEquirer extends Thread {
                 responseObject = gson.fromJson(response, MinerStatsResponse.class);
                 responseObject.setHost(host);
                 responseObject.setPort(String.valueOf(port));
-                Result result = createMinerResult(responseObject.getResult());
+                responseObject.setName(name);
+                Result result = createMinerResult(responseObject.getResult(), name);
                 responseObject.setMinerResult(result);
             }
             return responseObject;
@@ -88,15 +91,16 @@ public class MinerEquirer extends Thread {
     public static void main(String argv[]) throws InterruptedException {
         Gson gson = new Gson();
         while (true) {
-            System.out.println(gson.toJson(new MinerEquirer(0, "192.168.1.2", 3333).enquire()));
-            System.out.println(gson.toJson(new MinerEquirer(1, "192.168.1.3", 3333).enquire()));
+            System.out.println(gson.toJson(new MinerEquirer(0, "192.168.1.2", 3333, "warlock").enquire()));
+            System.out.println(gson.toJson(new MinerEquirer(1, "192.168.1.3", 3333, "junior").enquire()));
             Thread.sleep(1000);
         }
     }
 
-    private Result createMinerResult(List<String> res) {
+    private Result createMinerResult(List<String> res, String name) {
         try {
             Result result = new Result();
+            result.setName(name);
             result.setClaymoreVersion(res.get(0));
             result.setUptime(String.format("%dh:%02dmin/s", Integer.parseInt(res.get(1)) / 60, Integer.parseInt(res.get(1)) % 60));
             String hash = String.valueOf(Double.parseDouble(res.get(2).substring(0, res.get(2).indexOf(";"))) / 1000);
@@ -123,12 +127,13 @@ public class MinerEquirer extends Thread {
             result.setDecPoolSwitches(strings[3]);
             return result;
         } catch (StringIndexOutOfBoundsException ex) {
-            return createdEthOnlyMinerResult(res);
+            return createdEthOnlyMinerResult(res, name);
         }
     }
 
-    private Result createdEthOnlyMinerResult(List<String> res) {
+    private Result createdEthOnlyMinerResult(List<String> res, String name) {
         Result result = new Result();
+        result.setName(name);
         result.setClaymoreVersion(res.get(0));
         result.setUptime(String.format("%dh:%02dmin/s", Integer.parseInt(res.get(1)) / 60, Integer.parseInt(res.get(1)) % 60));
         String hash = String.valueOf(Double.parseDouble(res.get(2).substring(0, res.get(2).indexOf(";"))) / 1000);

@@ -14,8 +14,9 @@ var ethShares = 0;
 var decShares = 0;
 var totalEthHash = 0;
 var totalDecHash = 0;
-var gpuEthHash = [];
-var gpuDecHash = [];
+var minerEthHash = [];
+var minerDecHash = [];
+var altCoin;
 
 function getMiningData() {
     totalEthHash = 0;
@@ -24,6 +25,9 @@ function getMiningData() {
     decShares = 0;
     ethRejects = 0;
     decRejects = 0;
+    minerEthHash = [];
+    minerDecHash = [];
+
     if (miners !== undefined) {
         for (var x = 0; x < miners.length; x++) {
             $.ajax({
@@ -31,29 +35,28 @@ function getMiningData() {
                 async: false,
                 success: function (data) {
                     miner = data;
+                    if (miner.minerResult !== null) {
+                        totalEthHash += parseFloat(miner.minerResult.totalEthHashrate);
+                        ethShares += parseFloat(miner.minerResult.totalEthShares);
+                        ethRejects += parseFloat(miner.minerResult.totalEthRejects);
+                        if (miner.minerResult.totalDecHashrate !== null) {
+                            totalDecHash += parseFloat(miner.minerResult.totalDecHashrate);
+                            decShares += parseFloat(miner.minerResult.totalDecShares);
+                            minerEthHash.push(parseFloat(miner.minerResult.totalEthHashrate));
+                            minerDecHash.push(parseFloat(miner.minerResult.totalDecHashrate));
+                            decRejects += parseFloat(miner.minerResult.totalDecRejects);
+                        } else {
+                            totalDecHash += 0;
+                            minerEthHash.push(0);
+                            minerDecHash.push(0);
+                        }
+                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     miner = undefined;
                 }
             });
-            if (miner !== undefined) {
-                if (miner.minerResult !== null) {
-                    totalEthHash += parseFloat(miner.minerResult.totalEthHashrate);
-                    ethShares += parseFloat(miner.minerResult.totalEthShares);
-                    ethRejects += parseFloat(miner.minerResult.totalEthRejects);
-                    if (miner.minerResult.totalDecHashrate !== null) {
-                        totalDecHash += parseFloat(miner.minerResult.totalDecHashrate);
-                        decShares += parseFloat(miner.minerResult.totalDecShares);
-                        decRejects += parseFloat(miner.minerResult.totalDecRejects);
-                    } else {
-                        totalDecHash += 0;
-                    }
-                }
 
-            } else {
-                totalEthHash += 0;
-                totalDecHash += 0;
-            }
         }
         //document.getElementById("ethHashrate").innerHTML = parseFloat(Math.round(totalEthHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
         //document.getElementById("decHashrate").innerHTML = parseFloat(Math.round(totalDecHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
@@ -62,7 +65,7 @@ function getMiningData() {
     }
 }
 // Create the chart
-Highcharts.stockChart('flot-ethereum', {
+var ethHashrates = Highcharts.stockChart('flot-ethereum', {
     chart: {
         events: {
             load: function () {
@@ -71,49 +74,66 @@ Highcharts.stockChart('flot-ethereum', {
                     //async: false,
                     success: function (data) {
                         config = data;
+                        altCoin = config.altcoin;
                         miners = config.miners;
+                        var c;
+                        for (c = 0; c < miners.length; c++) {
+                            ethHashrates.addSeries({
+                                name: miners[c].name,
+                                data: function () {
+                                    var setupData = [],
+                                            time = (new Date()).getTime(),
+                                            i;
+                                    for (i = -86400; i <= 0; i += 1) {
+                                        setupData.push([time + i * 1000, 0]);
+                                    }
+                                    return setupData;
+                                }()
+                            });
+                        }
                     }
                 });
-
-                var series = this.series[0];
+                var series = this.series;
+                var totalSeries = this.series[0];
                 setInterval(function () {
                     getMiningData();
                     var x = (new Date()).getTime();
-                    var y = totalEthHash;
-                    series.addPoint([x, y], true, true);
-
+                    totalSeries.addPoint([x, totalEthHash], true, true);
+                    for (var k = 1; k < series.length-1; k++){
+                        var y = minerEthHash[k-1];//totalEthHash;
+                        series[k].addPoint([x, y], true, true);
+                    }
                 }, 1000);
             }
         },
-        backgroundColor: 'transparent',    
-        plotBackgroundColor: 'transparent',
-        type: 'area'
+        backgroundColor: 'transparent',
+        plotBackgroundColor: 'transparent'
     },
     rangeSelector: {
         buttons: [{
                 count: 1,
                 type: 'minute',
-                text: '1M'
+                text: '1m'
             }, {
                 count: 5,
                 type: 'minute',
-                text: '5M'
+                text: '5m'
             }, {
                 count: 30,
                 type: 'minute',
-                text: '30M'
+                text: '30m'
             }, {
                 count: 1,
                 type: 'hour',
-                text: '1H'
+                text: '1hr'
             }, {
                 count: 6,
                 type: 'hour',
-                text: '6H'
+                text: '6hr'
             }, {
                 count: 12,
                 type: 'hour',
-                text: '12Hs'
+                text: '12hr'
             }, {
                 type: 'all',
                 text: 'All'
@@ -147,7 +167,7 @@ Highcharts.stockChart('flot-ethereum', {
         }]
 });
 
-Highcharts.stockChart('flot-decred', {
+var decHashrates = Highcharts.stockChart('flot-decred', {
     chart: {
         events: {
             load: function () {
@@ -158,46 +178,64 @@ Highcharts.stockChart('flot-decred', {
                     success: function (data) {
                         config = data;
                         miners = config.miners;
+                        var c;
+                        for (c = 0; c < miners.length; c++) {
+                            decHashrates.addSeries({
+                                name: miners[c].name,
+                                data: function () {
+                                    var setupData = [],
+                                            time = (new Date()).getTime(),
+                                            i;
+                                    for (i = -86400; i <= 0; i += 1) {
+                                        setupData.push([time + i * 1000, 0]);
+                                    }
+                                    return setupData;
+                                }()
+                            });
+                        }
                     }
                 });
-                var series = this.series[0];
+                var series = this.series;
+                var totalSeries = this.series[0];
                 setInterval(function () {
+                    getMiningData();
                     var x = (new Date()).getTime();
-                    var y = totalDecHash;
-
-                    series.addPoint([x, y], true, true);
+                    totalSeries.addPoint([x, totalDecHash], true, true);
+                    for (var k = 1; k < series.length-1; k++){
+                        var y = minerDecHash[k-1];//totalEthHash;
+                        series[k].addPoint([x, y], true, true);
+                    }
                 }, 1000);
             }
         },
-        backgroundColor: 'transparent',    
-        plotBackgroundColor: 'transparent',
-        type: 'area'
+        backgroundColor: 'transparent',
+        plotBackgroundColor: 'transparent'
     },
     rangeSelector: {
         buttons: [{
                 count: 1,
                 type: 'minute',
-                text: '1M'
+                text: '1m'
             }, {
                 count: 5,
                 type: 'minute',
-                text: '5M'
+                text: '5m'
             }, {
                 count: 30,
                 type: 'minute',
-                text: '30M'
+                text: '30m'
             }, {
                 count: 1,
                 type: 'hour',
-                text: '1H'
+                text: '1hr'
             }, {
                 count: 6,
                 type: 'hour',
-                text: '6H'
+                text: '6hr'
             }, {
                 count: 12,
                 type: 'hour',
-                text: '12Hs'
+                text: '12hr'
             }, {
                 type: 'all',
                 text: 'All'
@@ -206,7 +244,7 @@ Highcharts.stockChart('flot-decred', {
         selected: 0
     },
     title: {
-        text: 'Decred Hashrates',
+        text: ' Hashrates',
     },
     exporting: {
         enabled: false
@@ -215,7 +253,7 @@ Highcharts.stockChart('flot-decred', {
         enabled: false
     },
     series: [{
-            name: 'Decred Hashrate',
+            name: 'Hashrate',
             data: (function () {
                 // generate an array of random data
                 var data = [],
@@ -240,7 +278,7 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
             }
         },
         type: 'gauge',
-        backgroundColor: 'transparent',    
+        backgroundColor: 'transparent',
         plotBackgroundColor: 'transparent',
         plotBackgroundImage: "null",
         plotBorderWidth: 0,
@@ -340,19 +378,21 @@ var decSpeed = Highcharts.chart('decHashrate', {
             load: function () {
                 setInterval(function () {
                     var point = decSpeed.series[0].points[0];
+                    decSpeed.series[0].name = altCoin + " Hashrate";
                     point.update(Math.round(totalDecHash * 1000) / 1000);
+                    decSpeed.setTitle({text: altCoin + " Hashrate"});
                 }, 1000);
             }
         },
         type: 'gauge',
-        backgroundColor: 'transparent',    
+        backgroundColor: 'transparent',
         plotBackgroundColor: 'transparent',
         plotBackgroundImage: "null",
         plotBorderWidth: 0,
         plotShadow: false
     },
     title: {
-        text: 'Decred Hashrate',
+        text: ' Hashrate',
         style: {
             color: '#FFF'
         }
@@ -431,7 +471,7 @@ var decSpeed = Highcharts.chart('decHashrate', {
             }]
     },
     series: [{
-            name: 'Decred Hashrate',
+            name: 'Hashrate',
             data: [0],
             tooltip: {
                 valueSuffix: ' MH/s'
@@ -439,17 +479,17 @@ var decSpeed = Highcharts.chart('decHashrate', {
         }]
 });
 
-ethRejectChart = Highcharts.chart('ethRejects', {
+var ethRejectChart = Highcharts.chart('ethRejects', {
     chart: {
         events: {
             load: function () {
                 setInterval(function () {
                     var seriesData = [];
-                    $.each(ethRejectChart.series[0].data, function(i, item){
-                        if(item.name === 'Shares'){
-                            item.y=ethShares;
-                        }else if(item.name === 'Rejects'){
-                            item.y=ethRejects;
+                    $.each(ethRejectChart.series[0].data, function (i, item) {
+                        if (item.name === 'Ethereum Shares') {
+                            item.y = ethShares;
+                        } else if (item.name === 'Ethereum Rejects') {
+                            item.y = ethRejects;
                         }
                         seriesData.push(item);
                     });
@@ -488,35 +528,36 @@ ethRejectChart = Highcharts.chart('ethRejects', {
         }
     },
     series: [{
-        name: 'Ethereum Shares/Rejects',
-        colorByPoint: true,
-        data: [{
-            name: 'Shares',
-            y: 0
-        }, {
-            name: 'Rejects',
-            y: 0,
-            sliced: true,
-            selected: true
+            name: 'Ethereum Shares/Rejects',
+            colorByPoint: true,
+            data: [{
+                    name: 'Ethereum Shares',
+                    y: 0,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: 'Ethereum Rejects',
+                    y: 0
+                }]
         }]
-    }]
 });
 
-decRejectChart = Highcharts.chart('decRejects', {
+var decRejectChart = Highcharts.chart('decRejects', {
     chart: {
         events: {
             load: function () {
                 setInterval(function () {
                     var seriesData = [];
-                    $.each(decRejectChart.series[0].data, function(i, item){
-                        if(item.name === 'Shares'){
-                            item.y=decShares;
-                        }else if(item.name === 'Rejects'){
-                            item.y=decRejects;
+                    $.each(decRejectChart.series[0].data, function (i, item) {
+                        if (item.name === 'Shares') {
+                            item.y = decShares;
+                        } else if (item.name === 'Rejects') {
+                            item.y = decRejects;
                         }
                         seriesData.push(item);
                     });
                     ethRejectChart.series[0].setData(seriesData, true);
+                    decRejectChart.setTitle({text: altCoin + " Shares/Rejects"});
                 }, 1000);
             }
         },
@@ -526,7 +567,7 @@ decRejectChart = Highcharts.chart('decRejects', {
         type: 'pie'
     },
     title: {
-        text: 'Decred Shares/Rejects Ratio'
+        text: ' Shares/Rejects Ratio'
     },
     exporting: {
         enabled: false
@@ -551,16 +592,16 @@ decRejectChart = Highcharts.chart('decRejects', {
         }
     },
     series: [{
-        name: 'Decred Shares/Rejects',
-        colorByPoint: true,
-        data: [{
-            name: 'Shares',
-            y: 0,
-            sliced: true,
-            selected: true
-        }, {
-            name: 'Rejects',
-            y: 0
+            name: 'Shares/Rejects',
+            colorByPoint: true,
+            data: [{
+                    name: 'Shares',
+                    y: 0,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: 'Rejects',
+                    y: 0
+                }]
         }]
-    }]
 });
