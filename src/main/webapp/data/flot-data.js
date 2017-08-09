@@ -17,6 +17,26 @@ var totalDecHash = 0;
 var minerEthHash = [];
 var minerDecHash = [];
 var altCoin;
+var nicehash = "https://api.nicehash.com/api";
+var statsex = "stats.provider.ex&addr=";
+var stats = "stats.provider&addr=";
+var algos = "multialgo.info"
+var algorithms;
+$(document).ready(function () {
+    $.ajax({
+        url: nicehash,
+        dataType: 'jsonp',
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            
+        }
+    });
+    setInterval(function () {
+        console.log("hello")
+    }, 15000);
+});
 
 function getMiningData() {
     totalEthHash = 0;
@@ -48,8 +68,10 @@ function getMiningData() {
                             minerEthHash.push(parseFloat(miner.minerResult.totalEthHashrate));
                             minerDecHash.push(parseFloat(miner.minerResult.totalDecHashrate));
                             decRejects += parseFloat(miner.minerResult.totalDecRejects);
-
                             table += "<tr><td>Uptime: " + miner.name + "&nbsp;&nbsp;</td><td>=&gt; " + miner.minerResult.uptime + "&nbsp;&nbsp;</td><td>GPU's =&gt; " + miner.minerResult.gpuStats.length + "</td></tr>";
+                            for (var i = 0; i < miner.minerResult.gpuStats.length; i++) {
+                                table += "<tr><td>GPU: " + i + "</td><td>Temp: " + miner.minerResult.gpuStats[i].gpuTemp + "&deg;C</td><td>Fan " + miner.minerResult.gpuStats[i].gpuFanSpeed + "%</td></tr>"
+                            }
                         } else {
                             totalDecHash += 0;
                             minerEthHash.push(0);

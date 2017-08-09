@@ -11,16 +11,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Result {
 
-    @SerializedName("multialgo")
+    @SerializedName("simplemultialgo")
     @Expose
-    private List<Multialgo> multialgo = new ArrayList<Multialgo>();
+    private List<Simplemultialgo> simplemultialgo = new ArrayList<Simplemultialgo>();
 
-    public List<Multialgo> getMultialgo() {
-        return multialgo;
+    public List<Simplemultialgo> getSimplemultialgo() {
+        return simplemultialgo;
     }
 
-    public void setMultialgo(List<Multialgo> multialgo) {
-        this.multialgo = multialgo;
+    public void setSimplemultialgo(List<Simplemultialgo> simplemultialgo) {
+        this.simplemultialgo = simplemultialgo;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class Result {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(multialgo).toHashCode();
+        return new HashCodeBuilder().append(simplemultialgo).toHashCode();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Result {
             return false;
         }
         Result rhs = ((Result) other);
-        return new EqualsBuilder().append(multialgo, rhs.multialgo).isEquals();
+        return new EqualsBuilder().append(simplemultialgo, rhs.simplemultialgo).isEquals();
     }
 
 }

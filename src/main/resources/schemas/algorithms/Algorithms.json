@@ -1,146 +1,151 @@
 {
     "result": {
-        "multialgo": [{
-                "default_factor": 1.0,
-                "port": 4333,
-                "name": "Scrypt",
+        "simplemultialgo": [{
+                "paying": "0.0234337",
+                "port": 3333,
+                "name": "scrypt",
                 "algo": 0
             }, {
-                "default_factor": 0.5,
-                "port": 4335,
-                "name": "ScryptNf",
+                "paying": "0.00000028",
+                "port": 3334,
+                "name": "sha256",
+                "algo": 1
+            }, {
+                "paying": "0",
+                "port": 3335,
+                "name": "scryptnf",
                 "algo": 2
             }, {
-                "default_factor": 15.0,
-                "port": 4336,
-                "name": "X11",
+                "paying": "0.00298723",
+                "port": 3336,
+                "name": "x11",
                 "algo": 3
             }, {
-                "default_factor": 6.5,
-                "port": 4337,
-                "name": "X13",
+                "paying": "0.00160126",
+                "port": 3337,
+                "name": "x13",
                 "algo": 4
             }, {
-                "default_factor": 500.0,
-                "port": 4338,
-                "name": "Keccak",
+                "paying": "0.00086688",
+                "port": 3338,
+                "name": "keccak",
                 "algo": 5
             }, {
-                "default_factor": 5.0,
-                "port": 4339,
-                "name": "X15",
+                "paying": "0.00333903",
+                "port": 3339,
+                "name": "x15",
                 "algo": 6
             }, {
-                "default_factor": 14.0,
-                "port": 4340,
-                "name": "Nist5",
+                "paying": "0.01123839",
+                "port": 3340,
+                "name": "nist5",
                 "algo": 7
             }, {
-                "default_factor": 0.45,
-                "port": 4341,
-                "name": "NeoScrypt",
+                "paying": "0.5736513",
+                "port": 3341,
+                "name": "neoscrypt",
                 "algo": 8
             }, {
-                "default_factor": 1.75,
-                "port": 4342,
-                "name": "Lyra2RE",
+                "paying": "0.02247997",
+                "port": 3342,
+                "name": "lyra2re",
                 "algo": 9
             }, {
-                "default_factor": 135.0,
-                "port": 4343,
-                "name": "WhirlpoolX",
+                "paying": "0",
+                "port": 3343,
+                "name": "whirlpoolx",
                 "algo": 10
             }, {
-                "default_factor": 16.0,
-                "port": 4344,
-                "name": "Qubit",
+                "paying": "0.00301047",
+                "port": 3344,
+                "name": "qubit",
                 "algo": 11
             }, {
-                "default_factor": 21.0,
-                "port": 4345,
-                "name": "Quark",
+                "paying": "0.00260073",
+                "port": 3345,
+                "name": "quark",
                 "algo": 12
             }, {
-                "default_factor": 0.0,
-                "port": 4346,
-                "name": "Axiom",
+                "paying": "0",
+                "port": 3346,
+                "name": "axiom",
                 "algo": 13
             }, {
-                "default_factor": 17.0,
-                "port": 4347,
-                "name": "Lyra2REv2",
+                "paying": "0.01400547",
+                "port": 3347,
+                "name": "lyra2rev2",
                 "algo": 14
             }, {
-                "default_factor": 7.0E-4,
-                "port": 4348,
-                "name": "ScryptJaneNf16",
+                "paying": "0",
+                "port": 3348,
+                "name": "scryptjanenf16",
                 "algo": 15
             }, {
-                "default_factor": 3500.0,
-                "port": 4349,
-                "name": "Blake256r8",
+                "paying": "0.00002281",
+                "port": 3349,
+                "name": "blake256r8",
                 "algo": 16
             }, {
-                "default_factor": 1900.0,
-                "port": 4350,
-                "name": "Blake256r14",
+                "paying": "0",
+                "port": 3350,
+                "name": "blake256r14",
                 "algo": 17
             }, {
-                "default_factor": 3500.0,
-                "port": 4351,
-                "name": "Blake256r8vnl",
+                "paying": "0",
+                "port": 3351,
+                "name": "blake256r8vnl",
                 "algo": 18
             }, {
-                "default_factor": 0.0,
-                "port": 4352,
-                "name": "Hodl",
+                "paying": "110",
+                "port": 3352,
+                "name": "hodl",
                 "algo": 19
             }, {
-                "default_factor": 29.0,
-                "port": 4353,
-                "name": "DaggerHashimoto",
+                "paying": "0.02133559",
+                "port": 3353,
+                "name": "daggerhashimoto",
                 "algo": 20
             }, {
-                "default_factor": 1900.0,
-                "port": 4354,
-                "name": "Decred",
+                "paying": "0.00018115",
+                "port": 3354,
+                "name": "decred",
                 "algo": 21
             }, {
-                "default_factor": 0.0,
-                "port": 4355,
-                "name": "CryptoNight",
+                "paying": "523.61835398",
+                "port": 3355,
+                "name": "cryptonight",
                 "algo": 22
             }, {
-                "default_factor": 0.0,
-                "port": 4356,
-                "name": "Lbry",
+                "paying": "0.0019537",
+                "port": 3356,
+                "name": "lbry",
                 "algo": 23
             }, {
-                "default_factor": 0.0,
-                "port": 4357,
-                "name": "Equihash",
+                "paying": "1499.84780151",
+                "port": 3357,
+                "name": "equihash",
                 "algo": 24
             }, {
-                "default_factor": 0.0,
-                "port": 4358,
-                "name": "Pascal",
+                "paying": "0.00024692",
+                "port": 3358,
+                "name": "pascal",
                 "algo": 25
             }, {
-                "default_factor": 0.0,
-                "port": 4359,
-                "name": "X11Gost",
+                "paying": "0.04377242",
+                "port": 3359,
+                "name": "x11gost",
                 "algo": 26
             }, {
-                "default_factor": 0.0,
-                "port": 4360,
-                "name": "Sia",
+                "paying": "0.00018394",
+                "port": 3360,
+                "name": "sia",
                 "algo": 27
             }, {
-                "default_factor": 0.0,
-                "port": 4361,
-                "name": "Blake2s",
+                "paying": "0.00012521",
+                "port": 3361,
+                "name": "blake2s",
                 "algo": 28
             }]
     },
-    "method": "multialgo.info"
+    "method": "simplemultialgo.info"
 }

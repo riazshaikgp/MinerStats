@@ -16,7 +16,7 @@ public class Result {
     private String addr;
     @SerializedName("workers")
     @Expose
-    private List<List<String>> workers = new ArrayList<List<String>>();
+    private List<List<Object>> workers = new ArrayList();
     @SerializedName("algo")
     @Expose
     private Integer algo;
@@ -29,11 +29,11 @@ public class Result {
         this.addr = addr;
     }
 
-    public List<List<String>> getWorkers() {
+    public List<List<Object>> getWorkers() {
         return workers;
     }
 
-    public void setWorkers(List<List<String>> workers) {
+    public void setWorkers(List<List<Object>> workers) {
         this.workers = workers;
     }
 

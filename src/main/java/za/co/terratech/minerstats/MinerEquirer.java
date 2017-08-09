@@ -103,7 +103,7 @@ public class MinerEquirer extends Thread {
             Result result = new Result();
             result.setName(name);
             result.setClaymoreVersion(res.get(0));
-            result.setUptime(String.format("%dh:%02dmin/s", Integer.parseInt(res.get(1)) / 60, Integer.parseInt(res.get(1)) % 60));
+            result.setUptime(String.format("%dh:%02dmin", Integer.parseInt(res.get(1)) / 60, Integer.parseInt(res.get(1)) % 60));
             String hash = String.valueOf(Double.parseDouble(res.get(2).substring(0, res.get(2).indexOf(";"))) / 1000);
             String total = res.get(2).substring(res.get(2).indexOf(";") + 1, res.get(2).lastIndexOf(";"));
             String rejects = res.get(2).substring(res.get(2).lastIndexOf(";") + 1);
@@ -144,7 +144,8 @@ public class MinerEquirer extends Thread {
             GpuStats gpu = new GpuStats();
             gpu.setGpuEthHash(ethHashs[index]);
             gpu.setGpuDecHash(decHashs[index]);
-            
+            gpu.setGpuTemp(tempsFans[index*2]);
+            gpu.setGpuFanSpeed(tempsFans[(index*2)+1]);
             gpus.add(gpu);
         }
         return gpus;
@@ -154,7 +155,7 @@ public class MinerEquirer extends Thread {
         Result result = new Result();
         result.setName(name);
         result.setClaymoreVersion(res.get(0));
-        result.setUptime(String.format("%dh:%02dmin/s", Integer.parseInt(res.get(1)) / 60, Integer.parseInt(res.get(1)) % 60));
+        result.setUptime(String.format("%dh:%02dmin", Integer.parseInt(res.get(1)) / 60, Integer.parseInt(res.get(1)) % 60));
         String hash = String.valueOf(Double.parseDouble(res.get(2).substring(0, res.get(2).indexOf(";"))) / 1000);
         String total = res.get(2).substring(res.get(2).indexOf(";") + 1, res.get(2).lastIndexOf(";"));
         String rejects = res.get(2).substring(res.get(2).lastIndexOf(";") + 1);

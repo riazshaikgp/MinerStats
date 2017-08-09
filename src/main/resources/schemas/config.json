@@ -3,6 +3,7 @@
     "temperature": 85,
     "hashrates": true,
     "altcoin": "Sia", 
+    "btcAddress": "1isZ1cMATUgbH9iWSVMBPgr6SaC6aKoT9",
     "miners": [
         {
             "id": 0,

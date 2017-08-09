@@ -23,6 +23,9 @@ public class Config {
     @SerializedName("altcoin")
     @Expose
     private String altcoin;
+    @SerializedName("btcAddress")
+    @Expose
+    private String btcAddress;
     @SerializedName("miners")
     @Expose
     private List<Miner> miners = new ArrayList<Miner>();
@@ -59,6 +62,14 @@ public class Config {
         this.altcoin = altcoin;
     }
 
+    public String getBtcAddress() {
+        return btcAddress;
+    }
+
+    public void setBtcAddress(String btcAddress) {
+        this.btcAddress = btcAddress;
+    }
+
     public List<Miner> getMiners() {
         return miners;
     }
@@ -74,7 +85,7 @@ public class Config {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(tolerance).append(temperature).append(hashrates).append(altcoin).append(miners).toHashCode();
+        return new HashCodeBuilder().append(tolerance).append(temperature).append(hashrates).append(altcoin).append(btcAddress).append(miners).toHashCode();
     }
 
     @Override
@@ -86,7 +97,7 @@ public class Config {
             return false;
         }
         Config rhs = ((Config) other);
-        return new EqualsBuilder().append(tolerance, rhs.tolerance).append(temperature, rhs.temperature).append(hashrates, rhs.hashrates).append(altcoin, rhs.altcoin).append(miners, rhs.miners).isEquals();
+        return new EqualsBuilder().append(tolerance, rhs.tolerance).append(temperature, rhs.temperature).append(hashrates, rhs.hashrates).append(altcoin, rhs.altcoin).append(btcAddress, rhs.btcAddress).append(miners, rhs.miners).isEquals();
     }
 
 }

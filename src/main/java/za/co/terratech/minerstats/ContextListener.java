@@ -39,6 +39,7 @@ public class ContextListener implements ServletContextListener {
     }
 
     ExecutorService executor = Executors.newCachedThreadPool();
+    ExecutorService nhExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -53,6 +54,7 @@ public class ContextListener implements ServletContextListener {
                 ContextListener.getMiners().put(miner.getName(), enquirer);
                 executor.execute(enquirer);
             }
+            nhExecutor.execute(new NicehashEnquirer(config.getBtcAddress()));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ContextListener.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
