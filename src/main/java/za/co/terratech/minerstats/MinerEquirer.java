@@ -14,6 +14,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -125,10 +126,28 @@ public class MinerEquirer extends Thread {
             result.setEthPoolSwitches(strings[1]);
             result.setDecInvalidShares(strings[2]);
             result.setDecPoolSwitches(strings[3]);
+            
+            result.setGpuStats( createGPUStats(result.getIndividualEthGpuHashrates(), result.getIndividualDecGpuHashrates(), result.getGpuTempFanSpeed()));
+            
             return result;
         } catch (StringIndexOutOfBoundsException ex) {
             return createdEthOnlyMinerResult(res, name);
         }
+    }
+    
+    private List<GpuStats> createGPUStats(String ethHash, String decHash, String tempsFan){
+        List<GpuStats> gpus = new ArrayList();
+        String[] ethHashs = ethHash.split(";");
+        String[] decHashs = decHash.split(";");
+        String[] tempsFans = tempsFan.split(";");
+        for(int index = 0; index < ethHashs.length; index++){
+            GpuStats gpu = new GpuStats();
+            gpu.setGpuEthHash(ethHashs[index]);
+            gpu.setGpuDecHash(decHashs[index]);
+            
+            gpus.add(gpu);
+        }
+        return gpus;
     }
 
     private Result createdEthOnlyMinerResult(List<String> res, String name) {
