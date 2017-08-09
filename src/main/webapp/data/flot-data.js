@@ -30,11 +30,10 @@ $(document).ready(function () {
             console.log(data);
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            
+
         }
     });
     setInterval(function () {
-        console.log("hello")
     }, 15000);
 });
 
@@ -135,9 +134,7 @@ var ethHashrates = Highcharts.stockChart('flot-ethereum', {
                     }
                 }, 1000);
             }
-        },
-        backgroundColor: 'transparent',
-        plotBackgroundColor: 'transparent'
+        }
     },
     rangeSelector: {
         buttons: [{
@@ -174,19 +171,11 @@ var ethHashrates = Highcharts.stockChart('flot-ethereum', {
     title: {
         text: 'Ethereum Hashrates'
     },
-    exporting: {
-        enabled: false
-    },
-    credits: {
-        enabled: false
-    },
     legend: {
         enabled: true
     },
     series: [{
             name: 'Total Ethereum Hashrate',
-            color: '#bb5555',
-            fillopacity: '0.5',
             data: (function () {
                 // generate an array of random data
                 var data = [],
@@ -242,9 +231,7 @@ var decHashrates = Highcharts.stockChart('flot-decred', {
                     decHashrates.setTitle({text: altCoin + " Hashrates"});
                 }, 1000);
             }
-        },
-        backgroundColor: 'transparent',
-        plotBackgroundColor: 'transparent'
+        }
     },
     rangeSelector: {
         buttons: [{
@@ -281,12 +268,6 @@ var decHashrates = Highcharts.stockChart('flot-decred', {
     title: {
         text: ' Hashrates',
     },
-    exporting: {
-        enabled: false
-    },
-    credits: {
-        enabled: false
-    },
     legend: {
         enabled: true
     },
@@ -316,55 +297,10 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
             }
         },
         type: 'gauge',
-        backgroundColor: 'transparent',
-        plotBackgroundColor: 'transparent',
-        plotBackgroundImage: "null",
-        plotBorderWidth: 0,
         plotShadow: false
     },
     title: {
         text: 'Ethereum Hashrate',
-        style: {
-            color: '#FFF'
-        }
-    },
-    exporting: {
-        enabled: false
-    },
-    credits: {
-        enabled: false
-    },
-    pane: {
-        startAngle: -150,
-        endAngle: 150,
-        background: [{
-                backgroundColor: {
-                    linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                    stops: [
-                        [0, '#FFF'],
-                        [1, '#333']
-                    ]
-                },
-                borderWidth: 0,
-                outerRadius: '109%'
-            }, {
-                backgroundColor: {
-                    linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                    stops: [
-                        [0, '#333'],
-                        [1, '#FFF']
-                    ]
-                },
-                borderWidth: 1,
-                outerRadius: '107%'
-            }, {
-                // default background
-            }, {
-                backgroundColor: '#DDD',
-                borderWidth: 0,
-                outerRadius: '105%',
-                innerRadius: '103%'
-            }]
     },
     // the value axis
     yAxis: {
@@ -374,12 +310,12 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
         minorTickWidth: 1,
         minorTickLength: 10,
         minorTickPosition: 'inside',
-        minorTickColor: '#666',
+        minorTickColor: '#FFF',
         tickPixelInterval: 30,
         tickWidth: 2,
         tickPosition: 'inside',
         tickLength: 15,
-        tickColor: '#666',
+        tickColor: '#FFF',
         labels: {
             step: 2,
             rotation: 'auto'
@@ -403,6 +339,16 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
     },
     series: [{
             name: 'Ethereum Hashrate',
+            dial: {
+                backgroundColor: "#efefef",
+                baseLength: "70%",
+                baseWidth: 3,
+                borderColor: "#2b908f",
+                borderWidth: 1,
+                radius: "80%",
+                rearLength: "10%",
+                topWidth: 1
+            },
             data: [0],
             tooltip: {
                 valueSuffix: ' MH/s'
@@ -423,55 +369,9 @@ var decSpeed = Highcharts.chart('decHashrate', {
             }
         },
         type: 'gauge',
-        backgroundColor: 'transparent',
-        plotBackgroundColor: 'transparent',
-        plotBackgroundImage: "null",
-        plotBorderWidth: 0,
-        plotShadow: false
     },
     title: {
-        text: ' Hashrate',
-        style: {
-            color: '#FFF'
-        }
-    },
-    exporting: {
-        enabled: false
-    },
-    credits: {
-        enabled: false
-    },
-    pane: {
-        startAngle: -150,
-        endAngle: 150,
-        background: [{
-                backgroundColor: {
-                    linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                    stops: [
-                        [0, '#FFF'],
-                        [1, '#333']
-                    ]
-                },
-                borderWidth: 0,
-                outerRadius: '109%'
-            }, {
-                backgroundColor: {
-                    linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                    stops: [
-                        [0, '#333'],
-                        [1, '#FFF']
-                    ]
-                },
-                borderWidth: 1,
-                outerRadius: '107%'
-            }, {
-                // default background
-            }, {
-                backgroundColor: '#DDD',
-                borderWidth: 0,
-                outerRadius: '105%',
-                innerRadius: '103%'
-            }]
+        text: ' Hashrate'
     },
     // the value axis
     yAxis: {
@@ -481,12 +381,12 @@ var decSpeed = Highcharts.chart('decHashrate', {
         minorTickWidth: 1,
         minorTickLength: 10,
         minorTickPosition: 'inside',
-        minorTickColor: '#666',
+        minorTickColor: '#FFF',
         tickPixelInterval: 30,
         tickWidth: 2,
         tickPosition: 'inside',
         tickLength: 15,
-        tickColor: '#666',
+        tickColor: '#FFF',
         labels: {
             step: 2,
             rotation: 'auto'
@@ -508,8 +408,19 @@ var decSpeed = Highcharts.chart('decHashrate', {
                 color: '#DF5353' // red
             }]
     },
+    
     series: [{
             name: 'Hashrate',
+            dial: {
+                backgroundColor: "#efefef",
+                baseLength: "70%",
+                baseWidth: 3,
+                borderColor: "#2b908f",
+                borderWidth: 1,
+                radius: "80%",
+                rearLength: "10%",
+                topWidth: 1
+            },
             data: [0],
             tooltip: {
                 valueSuffix: ' MH/s'
@@ -535,42 +446,18 @@ var ethRejectChart = Highcharts.chart('ethRejects', {
                 }, 1000);
             }
         },
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
+        name: "ethRejectsChart",
         type: 'pie'
     },
     title: {
         text: 'Ethereum Shares/Rejects Ratio'
-    },
-    exporting: {
-        enabled: false
-    },
-    credits: {
-        enabled: false
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                style: {
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                }
-            }
-        }
     },
     series: [{
             name: 'Ethereum Shares/Rejects',
             colorByPoint: true,
             data: [{
                     name: 'Ethereum Shares',
-                    y: 0,
+                    y: 100,
                     sliced: true,
                     selected: true
                 }, {
@@ -601,42 +488,18 @@ var decRejectChart = Highcharts.chart('decRejects', {
                 }, 1000);
             }
         },
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
+        name: "decRejectsChart",
         type: 'pie'
     },
     title: {
         text: ' Shares/Rejects Ratio'
-    },
-    exporting: {
-        enabled: false
-    },
-    credits: {
-        enabled: false
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                style: {
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                }
-            }
-        }
     },
     series: [{
             name: 'Shares/Rejects',
             colorByPoint: true,
             data: [{
                     name: 'Shares',
-                    y: 0,
+                    y: 100,
                     sliced: true,
                     selected: true
                 }, {

@@ -53,7 +53,6 @@ public class NicehashEnquirer extends Thread {
                 
                 
                 resource = client.resource(NICEHASH+WORKERS+BTCADDRESS+"&algo=20");
-                resource.addFilter(new LoggingFilter(Logger.getLogger(NicehashEnquirer.class.getSimpleName())));
                 String stringWorkers = resource.accept(json).get(String.class);
                 workers = gson.fromJson(stringWorkers, StatsProviderWorkers.class).getResult();
                 System.out.println(workers);
