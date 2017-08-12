@@ -305,7 +305,7 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
     // the value axis
     yAxis: {
         min: 0,
-        max: 70,
+        max: 120,
         minorTickInterval: 'auto',
         minorTickWidth: 1,
         minorTickLength: 10,
@@ -325,15 +325,15 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
         },
         plotBands: [{
                 from: 0,
-                to: 45,
+                to: 60,
                 color: '#55BF3B' // green
             }, {
-                from: 45,
-                to: 60,
+                from: 60,
+                to: 90,
                 color: '#DDDF0D' // yellow
             }, {
-                from: 60,
-                to: 70,
+                from: 90,
+                to: 120,
                 color: '#DF5353' // red
             }]
     },
@@ -376,7 +376,7 @@ var decSpeed = Highcharts.chart('decHashrate', {
     // the value axis
     yAxis: {
         min: 0,
-        max: 1500,
+        max: 2600,
         minorTickInterval: 'auto',
         minorTickWidth: 1,
         minorTickLength: 10,
@@ -396,15 +396,15 @@ var decSpeed = Highcharts.chart('decHashrate', {
         },
         plotBands: [{
                 from: 0,
-                to: 800,
+                to: 1000,
                 color: '#55BF3B' // green
             }, {
-                from: 800,
-                to: 1100,
+                from: 1000,
+                to: 1600,
                 color: '#DDDF0D' // yellow
             }, {
-                from: 1100,
-                to: 1500,
+                from: 1600,
+                to: 2600,
                 color: '#DF5353' // red
             }]
     },
