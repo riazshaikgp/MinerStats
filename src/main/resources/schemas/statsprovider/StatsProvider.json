@@ -6,27 +6,27 @@
                 "algo": 14,
                 "accepted_speed": "0.00000000"
             }, {
-                "balance": "0.00869519",
+                "balance": "0.00557977",
                 "rejected_speed": "0.00000000",
                 "algo": 20,
-                "accepted_speed": "0.06800360"
+                "accepted_speed": "0.06456790"
             }, {
-                "balance": "0.00213241",
+                "balance": "0.00000000",
                 "rejected_speed": "0.00000000",
                 "algo": 21,
                 "accepted_speed": "0.00000000"
             }, {
-                "balance": "0.00008990",
+                "balance": "0.00000000",
                 "rejected_speed": "0.00000000",
                 "algo": 22,
                 "accepted_speed": "0.00000000"
             }, {
-                "balance": "0.00000427",
+                "balance": "0.00000000",
                 "rejected_speed": "0.00000000",
                 "algo": 23,
                 "accepted_speed": "0.00000000"
             }, {
-                "balance": "0.00000000",
+                "balance": "0.00000347",
                 "rejected_speed": "0.00000000",
                 "algo": 24,
                 "accepted_speed": "0.00000000"
@@ -36,10 +36,15 @@
                 "algo": 25,
                 "accepted_speed": "0.00000000"
             }, {
-                "balance": "0.00000610",
+                "balance": "0.00000000",
                 "rejected_speed": "0.00000000",
                 "algo": 26,
                 "accepted_speed": "0.00000000"
+            }, {
+                "balance": "0.00084469",
+                "rejected_speed": "0.17179900",
+                "algo": 27,
+                "accepted_speed": "1.37439000"
             }, {
                 "balance": "0.00000000",
                 "rejected_speed": "0.00000000",
@@ -47,6 +52,11 @@
                 "accepted_speed": "0.00000000"
             }],
         "payments": [{
+                "amount": "0.01209873",
+                "fee": "0.00050411",
+                "TXID": "6277dc080b5e727b52e4b020e99a535bd9263cf4ffc4b26c7ddb32ecaed86100",
+                "time": "2017-08-08 09:58:24"
+            }, {
                 "amount": "0.01231620",
                 "fee": "0.00051317",
                 "TXID": "9814fce31a47d51dc887a61a096d8c72825f76f6bd981f2c008b756312da605f",

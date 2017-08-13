@@ -29,6 +29,7 @@ public class ContextListener implements ServletContextListener {
 
     private static Config config;
     private static final Map<String, MinerEquirer> miners = new HashMap();
+    private static NicehashEnquirer nhEnquirer;
 
     public static Config getConfig() {
         return config;
@@ -40,6 +41,7 @@ public class ContextListener implements ServletContextListener {
 
     ExecutorService executor = Executors.newCachedThreadPool();
     ExecutorService nhExecutor = Executors.newSingleThreadExecutor();
+    
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -54,7 +56,8 @@ public class ContextListener implements ServletContextListener {
                 ContextListener.getMiners().put(miner.getName(), enquirer);
                 executor.execute(enquirer);
             }
-            nhExecutor.execute(new NicehashEnquirer(config.getBtcAddress()));
+            nhEnquirer = new NicehashEnquirer(config.getBtcAddress());
+            nhExecutor.execute(nhEnquirer);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ContextListener.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -62,6 +65,10 @@ public class ContextListener implements ServletContextListener {
         }
     }
 
+    public static NicehashEnquirer getNhEnquirer() {
+        return nhEnquirer;
+    }
+    
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
 
