@@ -28,15 +28,15 @@ import javax.servlet.ServletContextListener;
 public class ContextListener implements ServletContextListener {
 
     private static Config config;
-    private static final Map<String, MinerEquirer> miners = new HashMap();
+    private static final Map<String, MinerEquirer> MINERS = new HashMap();
     private static NicehashEnquirer nhEnquirer;
 
     public static Config getConfig() {
         return config;
     }
 
-    public static Map<String, MinerEquirer> getMiners() {
-        return miners;
+    public static Map<String, MinerEquirer> getMINERS() {
+        return MINERS;
     }
 
     ExecutorService executor = Executors.newCachedThreadPool();
@@ -53,7 +53,7 @@ public class ContextListener implements ServletContextListener {
             config = gson.fromJson(json, Config.class);
             for (Miner miner : config.getMiners()) {
                 MinerEquirer enquirer = new MinerEquirer(miner.getId(), miner.getHost(), miner.getPort(), miner.getName());
-                ContextListener.getMiners().put(miner.getName(), enquirer);
+                ContextListener.getMINERS().put(miner.getName(), enquirer);
                 executor.execute(enquirer);
             }
             nhEnquirer = new NicehashEnquirer(config.getBtcAddress());
@@ -71,6 +71,11 @@ public class ContextListener implements ServletContextListener {
     
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-
+        for(MinerEquirer enquirer : getMINERS().values()){
+            enquirer.interrupt();
+        }
+        nhEnquirer.interrupt();
+        executor.shutdownNow();
+        nhExecutor.shutdownNow();
     }
 }

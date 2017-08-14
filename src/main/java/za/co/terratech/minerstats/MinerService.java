@@ -55,7 +55,7 @@ public class MinerService {
     @Path("/getMinerStats/{s}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMinerStats(@PathParam("s") String name) {
-        MinerStatsResponse response = ContextListener.getMiners().get(name).getMinerStats();
+        MinerStatsResponse response = ContextListener.getMINERS().get(name).getMinerStats();
         ResponseBuilder builder = Response.ok(response);
         builder.cacheControl(cc);
         return builder.build();

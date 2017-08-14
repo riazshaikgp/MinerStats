@@ -23,17 +23,8 @@ var stats = "stats.provider&addr=";
 var algos = "multialgo.info"
 var algorithms;
 $(document).ready(function () {
-    $.ajax({
-        url: nicehash,
-        dataType: 'jsonp',
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-
-        }
-    });
     setInterval(function () {
+        document.getElementById("nicehashLink").innerHTML = "<a href='https://new.nicehash.com/miner/" + config.btcAddress + "' target='_blank'>View stats on Nicehash</a>";
     }, 15000);
 });
 
@@ -87,6 +78,7 @@ function getMiningData() {
         }
         table += "</table>";
         document.getElementById("uptimes").innerHTML = table;
+        
         //document.getElementById("ethHashrate").innerHTML = parseFloat(Math.round(totalEthHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
         //document.getElementById("decHashrate").innerHTML = parseFloat(Math.round(totalDecHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
         //document.getElementById("ethRejects").innerHTML = ethShares + " Shares<br/>" + ethRejects + " Rejects";

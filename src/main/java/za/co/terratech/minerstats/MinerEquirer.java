@@ -48,7 +48,8 @@ public class MinerEquirer extends Thread {
                 minerStats = enquire();
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(MinerEquirer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MinerEquirer.class.getName()).log(Level.INFO, "Thread Interrupted, shutting down");
+                break;
             }
         }
     }

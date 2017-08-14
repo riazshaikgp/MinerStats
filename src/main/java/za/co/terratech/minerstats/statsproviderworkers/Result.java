@@ -14,12 +14,22 @@ public class Result {
     @SerializedName("addr")
     @Expose
     private String addr;
+    
     @SerializedName("workers")
     @Expose
     private List<List<Object>> workers = new ArrayList();
+    
+    @SerializedName("actualWorkers")
+    @Expose
+    private List<Worker> actualWorkers = new ArrayList();
+    
     @SerializedName("algo")
     @Expose
     private Integer algo;
+    
+    @SerializedName("algoName")
+    @Expose
+    private String algoName;
 
     public String getAddr() {
         return addr;
@@ -37,12 +47,28 @@ public class Result {
         this.workers = workers;
     }
 
+    public List<Worker> getActualWorkers() {
+        return actualWorkers;
+    }
+
+    public void setActualWorkers(List<Worker> actualWorkers) {
+        this.actualWorkers = actualWorkers;
+    }
+    
     public Integer getAlgo() {
         return algo;
     }
 
     public void setAlgo(Integer algo) {
         this.algo = algo;
+    }
+
+    public String getAlgoName() {
+        return algoName;
+    }
+
+    public void setAlgoName(String algoName) {
+        this.algoName = algoName;
     }
 
     @Override
