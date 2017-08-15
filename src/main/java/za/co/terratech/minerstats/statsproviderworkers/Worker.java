@@ -7,6 +7,7 @@ package za.co.terratech.minerstats.statsproviderworkers;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import za.co.terratech.minerstats.Speed;
 
 /**
  *

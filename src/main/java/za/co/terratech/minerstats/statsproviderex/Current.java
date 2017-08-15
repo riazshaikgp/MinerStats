@@ -1,6 +1,6 @@
-
 package za.co.terratech.minerstats.statsproviderex;
 
+import za.co.terratech.minerstats.Speed;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
@@ -16,7 +16,7 @@ public class Current {
     private String profitability;
     @SerializedName("data")
     @Expose
-    private List<Datum> data = new ArrayList<Datum>();
+    private List<Object> data = new ArrayList<Object>();
     @SerializedName("name")
     @Expose
     private String name;
@@ -26,6 +26,12 @@ public class Current {
     @SerializedName("algo")
     @Expose
     private Integer algo;
+    @SerializedName("balance")
+    @Expose
+    private String balance;
+    @SerializedName("speed")
+    @Expose
+    private Speed speed;
 
     public String getProfitability() {
         return profitability;
@@ -35,11 +41,11 @@ public class Current {
         this.profitability = profitability;
     }
 
-    public List<Datum> getData() {
+    public List<Object> getData() {
         return data;
     }
 
-    public void setData(List<Datum> data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 
@@ -65,6 +71,22 @@ public class Current {
 
     public void setAlgo(Integer algo) {
         this.algo = algo;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public Speed getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Speed speed) {
+        this.speed = speed;
     }
 
     @Override

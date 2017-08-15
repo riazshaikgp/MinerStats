@@ -1,4 +1,3 @@
-
 package za.co.terratech.minerstats.statsproviderex;
 
 import java.util.ArrayList;
@@ -13,16 +12,20 @@ public class Past {
 
     @SerializedName("data")
     @Expose
-    private List<List<Integer>> data = new ArrayList<List<Integer>>();
+    private List<List<Object>> data = new ArrayList<List<Object>>();
     @SerializedName("algo")
     @Expose
     private Integer algo;
 
-    public List<List<Integer>> getData() {
+    @SerializedName("speedTime")
+    @Expose
+    private List<PastObject> speedTimeBalance = new ArrayList<PastObject>();
+    
+    public List<List<Object>> getData() {
         return data;
     }
 
-    public void setData(List<List<Integer>> data) {
+    public void setData(List<List<Object>> data) {
         this.data = data;
     }
 
@@ -44,6 +47,15 @@ public class Past {
         return new HashCodeBuilder().append(data).append(algo).toHashCode();
     }
 
+    public List<PastObject> getSpeedTimeBalance() {
+        return speedTimeBalance;
+    }
+
+    public void setSpeedTimeBalance(List<PastObject> speedTimeBalance) {
+        this.speedTimeBalance = speedTimeBalance;
+    }
+
+    
     @Override
     public boolean equals(Object other) {
         if (other == this) {

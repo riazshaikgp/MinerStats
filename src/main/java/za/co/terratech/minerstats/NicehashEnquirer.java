@@ -9,9 +9,11 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
-import java.util.ArrayList;
+import java.util.AbstractList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,9 +23,12 @@ import za.co.terratech.minerstats.algorithms.Algorithms;
 import za.co.terratech.minerstats.algorithms.Simplemultialgo;
 import za.co.terratech.minerstats.statsprovider.Stat;
 import za.co.terratech.minerstats.statsprovider.StatsProvider;
+import za.co.terratech.minerstats.statsproviderex.Current;
+import za.co.terratech.minerstats.statsproviderex.Past;
+import za.co.terratech.minerstats.statsproviderex.PastObject;
+import za.co.terratech.minerstats.statsproviderex.StatsProviderEx;
 import za.co.terratech.minerstats.statsproviderworkers.AllResults;
 import za.co.terratech.minerstats.statsproviderworkers.Result;
-import za.co.terratech.minerstats.statsproviderworkers.Speed;
 import za.co.terratech.minerstats.statsproviderworkers.StatsProviderWorkers;
 import za.co.terratech.minerstats.statsproviderworkers.Worker;
 
@@ -43,6 +48,7 @@ public class NicehashEnquirer extends Thread {
     private Algorithms algorithms;
     private AllResults allWorkerResults;
     private za.co.terratech.minerstats.statsprovider.Result stats;
+    private StatsProviderEx statsEx;
 
     public NicehashEnquirer(String btcAddress) {
         this.btcAddress = "&addr=" + btcAddress;
@@ -55,6 +61,7 @@ public class NicehashEnquirer extends Thread {
             try {
                 Client client = Client.create();
                 String json = MediaType.APPLICATION_JSON;
+                
                 WebResource resource = client.resource(NICEHASH + ALGOS);
                 String stringAlgo = resource.accept(json).get(String.class);
                 Gson gson = new Gson();
@@ -65,6 +72,7 @@ public class NicehashEnquirer extends Thread {
                 });
                 algorithms = algorithm;
                 algos = algo;
+                
                 resource = client.resource(NICEHASH + STATS + btcAddress);
                 String jsonStats = resource.accept(json).get(String.class);
                 stats = gson.fromJson(jsonStats, StatsProvider.class).getResult();
@@ -78,6 +86,12 @@ public class NicehashEnquirer extends Thread {
                         workerResults.getResults().addAll(createActualWorkers(workerstats.getResult()).getActualWorkers());
                     }
                 }
+                Thread.sleep(15000);
+                resource = client.resource(NICEHASH + STATSEX + btcAddress);
+                String jsonStatsEx = resource.accept(json).get(String.class);
+                statsEx = gson.fromJson(jsonStatsEx, StatsProviderEx.class);
+                setUnpaidBalancesAndCreateSpeeds(statsEx.getResult().getCurrent());
+                setPastData(statsEx.getResult().getPast());
                 allWorkerResults = workerResults;
                 Thread.sleep(15000);
             } catch (InterruptedException ex) {
@@ -86,6 +100,31 @@ public class NicehashEnquirer extends Thread {
             }
         }
 
+    }
+    
+    private void setPastData(List<Past> past) {
+        for(Past p : past){
+            p.setSpeedTimeBalance(createSpeedTimeBalance(p.getData()));
+        }
+    }
+    
+    private List<PastObject> createSpeedTimeBalance(List<List<Object>> data) {
+        List<PastObject> r = new LinkedList();
+        for(List<Object> obj : data){
+            PastObject p = new PastObject();
+            p.setTimestamp((Double) obj.get(0));
+            p.setSpeed(createSpeedObject((LinkedTreeMap<String, String>) obj.get(1)));
+            p.setBalance((String) obj.get(2));
+            r.add(p);
+        }
+        return r;
+    }
+    
+    private void setUnpaidBalancesAndCreateSpeeds(List<Current> current) {
+        for(Current c : current){
+            c.setSpeed(createSpeedObject((LinkedTreeMap<String, String>) c.getData().get(0)));
+            c.setBalance((String) c.getData().get(1));
+        }
     }
 
     private Result createActualWorkers(Result result) {
@@ -102,6 +141,16 @@ public class NicehashEnquirer extends Thread {
             result.getActualWorkers().add(worker);
         }
         return result;
+    }
+    
+    private Speed createSpeedObject(LinkedTreeMap<String, String> obj) {
+        Speed speed = new Speed();
+        speed.setA(obj.get("a") != null ? obj.get("a") : "0");
+        speed.setRs(obj.get("rs") != null ? obj.get("rs") : "0");
+        speed.setRt(obj.get("rt") != null ? obj.get("rt") : "0");
+        speed.setRd(obj.get("rd") != null ? obj.get("rd") : "0");
+        speed.setRo(obj.get("ro") != null ? obj.get("ro") : "0");
+        return speed;
     }
 
     public String getBtcAddress() {
@@ -144,16 +193,41 @@ public class NicehashEnquirer extends Thread {
         this.allWorkerResults = allWorkerResults;
     }
 
+    public StatsProviderEx getStatsEx() {
+        return statsEx;
+    }
+
+    public void setStatsEx(StatsProviderEx statsEx) {
+        this.statsEx = statsEx;
+    }
+
     public static void main(String[] args) {
         NicehashEnquirer enquirer = new NicehashEnquirer("1isZ1cMATUgbH9iWSVMBPgr6SaC6aKoT9");
         enquirer.run();
     }
+/*
+    @SerializedName("a")
+    @Expose
+    private String a; //accepted
+    @SerializedName("rt")
+    @Expose
+    private String rt; //rejected target
+    @SerializedName("rs")
+    @Expose
+    private String rs; //rejected stale 
+    @SerializedName("rd")
+    @Expose
+    private String rd; //rejected duplicate
+    @SerializedName("ro")
+    @Expose
+    private String ro; //rejected other
+*/
 
-    private Speed createSpeedObject(LinkedTreeMap<String, String> obj) {
-        Speed speed = new Speed();
-        speed.setA(obj.get("a") != null ? obj.get("a") : "0");
-        speed.setRs(obj.get("rs") != null ? obj.get("rs") : "0");
-        return speed;
-    }
+    
+
+    
+
+    
+    
 
 }
