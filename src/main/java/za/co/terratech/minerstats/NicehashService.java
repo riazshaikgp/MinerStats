@@ -45,4 +45,13 @@ public class NicehashService {
         builder.cacheControl(cc);
         return builder.build();
     }
+    
+    @GET
+    @Path("/getMiningStats")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMiningStats(){
+        ResponseBuilder builder = Response.ok(ContextListener.getNhEnquirer().getStatsEx());
+        builder.cacheControl(cc);
+        return builder.build();
+    }
 }
