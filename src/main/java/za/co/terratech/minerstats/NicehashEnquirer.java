@@ -53,12 +53,12 @@ public class NicehashEnquirer extends Thread {
 
     @Override
     public void run() {
-
+        int count = 0;
         while (true) {
             try {
                 Client client = Client.create();
                 String json = MediaType.APPLICATION_JSON;
-                
+
                 WebResource resource = client.resource(NICEHASH + ALGOS);
                 String stringAlgo = resource.accept(json).get(String.class);
                 Gson gson = new Gson();
@@ -69,7 +69,7 @@ public class NicehashEnquirer extends Thread {
                 });
                 algorithms = algorithm;
                 algos = algo;
-                
+
                 resource = client.resource(NICEHASH + STATS + btcAddress);
                 String jsonStats = resource.accept(json).get(String.class);
                 stats = gson.fromJson(jsonStats, StatsProvider.class).getResult();
@@ -89,25 +89,30 @@ public class NicehashEnquirer extends Thread {
                 statsEx = gson.fromJson(jsonStatsEx, StatsProviderEx.class);
                 setUnpaidBalancesAndCreateSpeeds(statsEx.getResult().getCurrent());
                 setPastData(statsEx.getResult().getPast());
+                count = 0;
+
                 allWorkerResults = workerResults;
                 Thread.sleep(15000);
+                count++;
             } catch (InterruptedException ex) {
                 Logger.getLogger(NicehashEnquirer.class.getName()).log(Level.INFO, "Thread Interrupted, shutting down");
                 break;
+            } catch(Exception ex){
+                ex.printStackTrace();
             }
         }
 
     }
-    
+
     private void setPastData(List<Past> past) {
-        for(Past p : past){
+        for (Past p : past) {
             p.setSpeedTimeBalance(createSpeedTimeBalance(p.getData()));
         }
     }
-    
+
     private List<PastObject> createSpeedTimeBalance(List<List<Object>> data) {
         List<PastObject> r = new LinkedList();
-        for(List<Object> obj : data){
+        for (List<Object> obj : data) {
             PastObject p = new PastObject();
             p.setTimestamp((Double) obj.get(0));
             p.setSpeed(createSpeedObject((LinkedTreeMap<String, String>) obj.get(1)));
@@ -116,9 +121,9 @@ public class NicehashEnquirer extends Thread {
         }
         return r;
     }
-    
+
     private void setUnpaidBalancesAndCreateSpeeds(List<Current> current) {
-        for(Current c : current){
+        for (Current c : current) {
             c.setSpeed(createSpeedObject((LinkedTreeMap<String, String>) c.getData().get(0)));
             c.setBalance((String) c.getData().get(1));
         }
@@ -139,7 +144,7 @@ public class NicehashEnquirer extends Thread {
         }
         return result;
     }
-    
+
     private Speed createSpeedObject(LinkedTreeMap<String, String> obj) {
         Speed speed = new Speed();
         speed.setA(obj.get("a") != null ? obj.get("a") : "0");
@@ -202,29 +207,5 @@ public class NicehashEnquirer extends Thread {
         NicehashEnquirer enquirer = new NicehashEnquirer("1isZ1cMATUgbH9iWSVMBPgr6SaC6aKoT9");
         enquirer.run();
     }
-/*
-    @SerializedName("a")
-    @Expose
-    private String a; //accepted
-    @SerializedName("rt")
-    @Expose
-    private String rt; //rejected target
-    @SerializedName("rs")
-    @Expose
-    private String rs; //rejected stale 
-    @SerializedName("rd")
-    @Expose
-    private String rd; //rejected duplicate
-    @SerializedName("ro")
-    @Expose
-    private String ro; //rejected other
-*/
-
-    
-
-    
-
-    
-    
 
 }

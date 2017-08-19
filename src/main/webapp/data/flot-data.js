@@ -23,10 +23,37 @@ var stats = "stats.provider&addr=";
 var algos = "multialgo.info"
 var algorithms;
 $(document).ready(function () {
-    setInterval(function () {
-        document.getElementById("nicehashLink").innerHTML = "<a href='https://new.nicehash.com/miner/" + config.btcAddress + "' target='_blank'>View stats on Nicehash</a>";
-    }, 15000);
+    document.getElementById("nicehashLink").innerHTML = "<a href='https://new.nicehash.com/miner/" + config.btcAddress + "' target='_blank'><i class='fa fa-link fa-fw'></i> View stats on Nicehash</a>";
 });
+
+function restart(id) {
+    $.ajax({
+        url: "../miner/MinerService/restartMiner/" + id,
+        async: false,
+        success: function (data) {
+            document.getElementById("myModalLabel").innerHTML = "SUCCESS";
+            document.getElementById("myModalBody").innerHTML = "Restart of miner has been successfully called</br>This does not gaurantee a successful restart, Please continue monitoring to confirm.";
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            document.getElementById("myModalLabel").innerHTML = "FAILED";
+            document.getElementById("myModalBody").innerHTML = "Restart of miner was not successfully called.</br>May require manual reboot or could mean the rig is unresponsive.";
+        }
+    });
+}
+function reboot(id) {
+    $.ajax({
+        url: "../miner/MinerService/rebootMiner/" + id,
+        async: false,
+        success: function (data) {
+            document.getElementById("myModalLabel").innerHTML = "SUCCESS";
+            document.getElementById("myModalBody").innerHTML = "Reboot of miner has been successfully called</br>This does not gaurantee a successful reboot, Please continue monitoring to confirm.";
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            document.getElementById("myModalLabel").innerHTML = "FAILED";
+            document.getElementById("myModalBody").innerHTML = "Reboot of miner was not successfully called.</br>May require manual reboot or could mean the rig is unresponsive.";
+        }
+    });
+}
 
 function getMiningData() {
     totalEthHash = 0;
@@ -42,13 +69,18 @@ function getMiningData() {
     if (miners !== undefined) {
         document.getElementById("uptimes").innerHTML = "";
         var table = "<table>";
+        var commands = "";
         for (var x = 0; x < miners.length; x++) {
+
             $.ajax({
                 url: "../miner/MinerService/getMinerStats/" + miners[x].name,
                 async: false,
                 success: function (data) {
                     miner = data;
+                    commands += "<button class='btn btn-warning btn-lg' data-toggle='modal' data-target='#requestStatus' onclick='restart(" + miners[x].id + ");'>Restart " + miners[x].name + "</button>&nbsp;";
+                    commands += "<button class='btn btn-danger btn-lg' data-toggle='modal' data-target='#requestStatus' onclick='reboot(" + miners[x].id + ");'>Reboot " + miners[x].name + "</button>&nbsp;";
                     if (miner.minerResult !== null) {
+                        
                         totalEthHash += parseFloat(miner.minerResult.totalEthHashrate);
                         ethShares += parseFloat(miner.minerResult.totalEthShares);
                         ethRejects += parseFloat(miner.minerResult.totalEthRejects);
@@ -78,7 +110,8 @@ function getMiningData() {
         }
         table += "</table>";
         document.getElementById("uptimes").innerHTML = table;
-        
+        document.getElementById("commands").innerHTML = commands;
+
         //document.getElementById("ethHashrate").innerHTML = parseFloat(Math.round(totalEthHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
         //document.getElementById("decHashrate").innerHTML = parseFloat(Math.round(totalDecHash * 1000) / 1000).toFixed(3) + "<br/>MH/s";
         //document.getElementById("ethRejects").innerHTML = ethShares + " Shares<br/>" + ethRejects + " Rejects";
@@ -98,20 +131,23 @@ var ethHashrates = Highcharts.stockChart('flot-ethereum', {
                         altCoin = config.altcoin;
                         miners = config.miners;
                         var c;
+
                         for (c = 0; c < miners.length; c++) {
+
                             ethHashrates.addSeries({
                                 name: miners[c].name,
                                 data: function () {
                                     var setupData = [],
                                             time = (new Date()).getTime(),
                                             i;
-                                    for (i = -86400; i <= 0; i += 1) {
-                                        setupData.push([time + i * 1000, 0]);
+                                    for (i = -17280; i <= 0; i += 1) {
+                                        setupData.push([time + i * 5000, 0]);
                                     }
                                     return setupData;
                                 }()
                             });
                         }
+
                     }
                 });
                 var series = this.series;
@@ -124,9 +160,10 @@ var ethHashrates = Highcharts.stockChart('flot-ethereum', {
                         var y = minerEthHash[k - 1];//totalEthHash;
                         series[k].addPoint([x, y], true, true);
                     }
-                }, 1000);
+                }, 5000);
             }
-        }
+        },
+        type: "area"
     },
     rangeSelector: {
         buttons: [{
@@ -173,8 +210,8 @@ var ethHashrates = Highcharts.stockChart('flot-ethereum', {
                 var data = [],
                         time = (new Date()).getTime(),
                         i;
-                for (i = -86400; i <= 0; i += 1) {
-                    data.push([time + i * 1000, 0]);
+                for (i = -17280; i <= 0; i += 1) {
+                    data.push([time + i * 5000, 0]);
                 }
                 return data;
             }())
@@ -200,8 +237,8 @@ var decHashrates = Highcharts.stockChart('flot-decred', {
                                     var setupData = [],
                                             time = (new Date()).getTime(),
                                             i;
-                                    for (i = -86400; i <= 0; i += 1) {
-                                        setupData.push([time + i * 1000, 0]);
+                                    for (i = -17280; i <= 0; i += 1) {
+                                        setupData.push([time + i * 5000, 0]);
                                     }
                                     return setupData;
                                 }()
@@ -221,9 +258,10 @@ var decHashrates = Highcharts.stockChart('flot-decred', {
                     }
 
                     decHashrates.setTitle({text: altCoin + " Hashrates"});
-                }, 1000);
+                }, 5000);
             }
-        }
+        },
+        type: "area"
     },
     rangeSelector: {
         buttons: [{
@@ -264,14 +302,14 @@ var decHashrates = Highcharts.stockChart('flot-decred', {
         enabled: true
     },
     series: [{
-            name: 'Hashrate',
+            name: 'Total Secondary Coin Hashrate',
             data: (function () {
                 // generate an array of random data
                 var data = [],
                         time = (new Date()).getTime(),
                         i;
-                for (i = -86400; i <= 0; i += 1) {
-                    data.push([time + i * 1000, 0]);
+                for (i = -17280; i <= 0; i += 1) {
+                    data.push([time + i * 5000, 0]);
                 }
                 return data;
             }())
@@ -285,7 +323,7 @@ var ethSpeed = Highcharts.chart('ethHashrate', {
                 setInterval(function () {
                     var point = ethSpeed.series[0].points[0];
                     point.update(Math.round(totalEthHash * 1000) / 1000);
-                }, 1000);
+                }, 5000);
             }
         },
         type: 'gauge',
@@ -357,7 +395,7 @@ var decSpeed = Highcharts.chart('decHashrate', {
                     decSpeed.series[0].name = altCoin + " Hashrate";
                     point.update(Math.round(totalDecHash * 1000) / 1000);
                     decSpeed.setTitle({text: altCoin + " Hashrate"});
-                }, 1000);
+                }, 5000);
             }
         },
         type: 'gauge',
@@ -400,7 +438,7 @@ var decSpeed = Highcharts.chart('decHashrate', {
                 color: '#DF5353' // red
             }]
     },
-    
+
     series: [{
             name: 'Hashrate',
             dial: {
@@ -435,7 +473,7 @@ var ethRejectChart = Highcharts.chart('ethRejects', {
                         seriesData.push(item);
                     });
                     ethRejectChart.series[0].setData(seriesData, true);
-                }, 1000);
+                }, 5000);
             }
         },
         name: "ethRejectsChart",
@@ -477,7 +515,7 @@ var decRejectChart = Highcharts.chart('decRejects', {
                     });
                     ethRejectChart.series[0].setData(seriesData, true);
                     decRejectChart.setTitle({text: altCoin + " Shares/Rejects Ratio"});
-                }, 1000);
+                }, 5000);
             }
         },
         name: "decRejectsChart",

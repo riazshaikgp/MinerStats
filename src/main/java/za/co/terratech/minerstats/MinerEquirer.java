@@ -46,7 +46,7 @@ public class MinerEquirer extends Thread {
         while (true) {
             try {
                 minerStats = enquire();
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(MinerEquirer.class.getName()).log(Level.INFO, "Thread Interrupted, shutting down");
                 break;
@@ -95,7 +95,7 @@ public class MinerEquirer extends Thread {
         while (true) {
             System.out.println(gson.toJson(new MinerEquirer(0, "192.168.1.2", 3333, "warlock").enquire()));
             System.out.println(gson.toJson(new MinerEquirer(1, "192.168.1.3", 3333, "junior").enquire()));
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         }
     }
 
